@@ -1,0 +1,603 @@
+works:
+  - authors:
+      - Yan B. Vogel
+      - Yesim Sahin
+      - Oleksandra Ortikova
+      - Simon C. Boehme
+      - Arjan J. Houtepen
+      - Dmitry N. Dirin
+      - Maksym V. Kovalenko
+    journalTitle: null
+    publicationDate:
+      day: "23"
+      month: "04"
+      year: "2026"
+    title:
+      value: n- and p-type CsPbBr3 Nanocrystals via Electrochemical Doping
+    type: preprint
+    url: https://doi.org/10.26434/chemrxiv.15002340/v1
+    doi: 10.26434/chemrxiv.15002340/v1
+  - authors:
+      - Hua Chen
+      - Boris B. Claus
+      - Wenya Song
+      - Marina Vildanova
+      - Lara M. van der Poll
+      - Anne van Aken
+      - Yan B. Vogel
+      - Jing Bai
+      - Yun Hai
+      - Yigithan M. Kose
+      - Maria Isabel Pintor Monroy
+      - Loredana Protesescu
+      - Tom J. Savenije
+      - Zeger Hens
+      - Itai Lieberman
+      - Arjan J. Houtepen
+    journalTitle: null
+    publicationDate:
+      day: "03"
+      month: "04"
+      year: "2026"
+    title:
+      value: InF3 Surface Passivation on InAs Quantum Dots Enhances Photoluminescence
+        and Reduces Trap-Induced Dark Current in Shortwave Infrared
+        Photodetectors
+    type: preprint
+    url: http://dx.doi.org/10.26434/chemrxiv.15001567/v1
+    doi: 10.26434/chemrxiv.15001567/v1
+  - authors:
+      - Maarten Stam
+      - Hua Chen
+      - Yan B. Vogel
+      - Irene Stavast
+      - Mourijn van Leeuwen
+      - Reinout F. Ubbink
+      - Niels van Silfhout
+      - Colin F. A. van der Made
+      - Luca Giordano
+      - Pieter Schiettecatte
+      - Zeger Hens
+      - Arjan J. Houtepen
+    journalTitle: Chemistry of Materials
+    publicationDate:
+      day: "10"
+      month: "02"
+      year: "2026"
+    title:
+      value: Electrochemical Stability and Trap-State-Mediated Photoluminescence
+        Modulation of InP-Based Quantum Dots
+    type: journal-article
+    url: https://doi.org/10.1021/acs.chemmater.5c02861
+    doi: 10.1021/acs.chemmater.5c02861
+  - authors:
+      - Yan B. Vogel
+      - Rui Tao
+      - Hua Chen
+      - Lorenzo J.A. Ferraresi
+      - Simon C. Boehme
+      - Dmitry N. Dirin
+      - Ivan Shorubalko
+      - Arjan J. Houtepen
+      - Maksym V. Kovalenko
+    journalTitle: Journal of the American Chemical Society
+    publicationDate:
+      day: "04"
+      month: "02"
+      year: "2026"
+    title:
+      value: Electrochemical Control over Electron Density of InAs Quantum Dots
+    type: journal-article
+    url: https://doi.org/10.1021/jacs.5c21128
+    doi: 10.1021/jacs.5c21128
+  - authors:
+      - Yan B. Vogel
+      - Willemijn Boeije
+      - Lotte van Steekelenburg
+      - Demi Vollebregt
+      - Reinout Ubbink
+      - Hua Chen
+      - Ali Tayefeh Younesi
+      - Ronald Ulbricht
+      - Wolter F. Jager
+      - Ferdinand Grozema
+      - Arjan J. Houtepen
+    journalTitle: ACS Nano
+    publicationDate:
+      day: "03"
+      month: "02"
+      year: "2026"
+    title:
+      value: Charge Transfer between Quantum Dots and Redox Molecules Is Not
+        Auger-Assisted
+    type: journal-article
+    url: https://doi.org/10.1021/acsnano.5c13838
+    doi: 10.1021/acsnano.5c13838
+  - authors:
+      - Yan B. Vogel
+      - Rui Tao
+      - Hua Chen
+      - Lorenzo J.A. Ferraresi
+      - Simon C. Boehme
+      - Dmitry N. Dirin
+      - Ivan Shorubalko
+      - Arjan J. Houtepen
+      - Maksym V. Kovalenko
+    journalTitle: null
+    publicationDate:
+      day: "02"
+      month: "12"
+      year: "2025"
+    title:
+      value: Electrochemical control over electron density of InAs quantum dots
+    type: preprint
+    url: https://doi.org/10.26434/chemrxiv-2025-j064p
+    doi: 10.26434/chemrxiv-2025-j064p
+  - authors:
+      - Yan Vogel
+      - Willemijn Boeije
+      - Lotte van Steekelenburg
+      - Demi Vollebregt
+      - Reinout Ubbink
+      - Hua Chen
+      - Ali Younesi
+      - Ronald Ulbricht
+      - Wolter Jager
+      - Ferdinand Grozema
+      - Arjan Houtepen
+    journalTitle: null
+    publicationDate:
+      day: "27"
+      month: "02"
+      year: "2025"
+    title:
+      value: The mechanism of charge transfer between quantum dots and redox molecules
+    type: preprint
+    url: https://doi.org/10.21203/rs.3.rs-5957346/v1
+    doi: 10.21203/rs.3.rs-5957346/v1
+  - authors:
+      - Reinout F. Ubbink
+      - Yan B. Vogel
+      - Maarten Stam
+      - Hua Chen
+      - Arjan J. Houtepen
+    journalTitle: Chemistry of Materials
+    publicationDate:
+      day: "28"
+      month: "01"
+      year: "2025"
+    title:
+      value: Where Do the Electrons Go? Studying Loss Processes in the Electrochemical
+        Charging of Semiconductor Nanomaterials
+    type: journal-article
+    url: https://doi.org/10.1021/acs.chemmater.4c02998
+    doi: 10.1021/acs.chemmater.4c02998
+  - authors:
+      - Jence T. Mulder
+      - Julius O. V. Monchen
+      - Yan B. Vogel
+      - Cheng Tai Lin
+      - Filippo Drago
+      - Valentina M. Caselli
+      - Niranjan Saikumar
+      - Tom J. Savenije
+      - Arjan J. Houtepen
+    journalTitle: Journal of the American Chemical Society
+    publicationDate:
+      day: "04"
+      month: "09"
+      year: "2024"
+    title:
+      value: Orthogonal Electrochemical Stability of Bulk and Surface in Lead Halide
+        Perovskite Thin Films and Nanocrystals
+    type: journal-article
+    url: https://doi.org/10.1021/jacs.4c06340
+    doi: 10.1021/jacs.4c06340
+  - authors:
+      - Maarten Stam
+      - Guilherme Almeida
+      - Reinout F. Ubbink
+      - Lara M. van der Poll
+      - Yan B. Vogel
+      - Hua Chen
+      - Luca Giordano
+      - Pieter Schiettecatte
+      - Zeger Hens
+      - Arjan J. Houtepen
+    journalTitle: ACS Nano
+    publicationDate:
+      day: "04"
+      month: "06"
+      year: "2024"
+    title:
+      value: Near-Unity Photoluminescence Quantum Yield of Core-Only InP Quantum Dots
+        via a Simple Postsynthetic InF3 Treatment
+    type: journal-article
+    url: https://doi.org/10.1021/acsnano.4c03290
+    doi: 10.1021/acsnano.4c03290
+  - authors:
+      - Yan B. Vogel
+      - Le Nhan Pham
+      - Maarten Stam
+      - Reinout F. Ubbink
+      - Michelle L. Coote
+      - Arjan J. Houtepen
+    journalTitle: Journal of the American Chemical Society
+    publicationDate:
+      day: "10"
+      month: "04"
+      year: "2024"
+    title:
+      value: Solvation Shifts the Band-Edge Position of Colloidal Quantum Dots by
+        Nearly 1 eV
+    type: journal-article
+    url: https://doi.org/10.1021/jacs.4c00402
+    doi: 10.1021/jacs.4c00402
+  - authors:
+      - Reinout F. Ubbink
+      - Solrun Gudjonsdottir
+      - Yan B. Vogel
+      - Arjan J. Houtepen
+    journalTitle: The Journal of Physical Chemistry C
+    publicationDate:
+      day: "25"
+      month: "05"
+      year: "2023"
+    title:
+      value: Numerical Model to Simulate Electrochemical Charging of Nanocrystal Films
+    type: journal-article
+    url: https://doi.org/10.1021/acs.jpcc.3c01562
+    doi: 10.1021/acs.jpcc.3c01562
+  - authors:
+      - Yan B. Vogel
+      - Maarten Stam
+      - Jence T. Mulder
+      - Arjan J. Houtepen
+    journalTitle: ACS Nano
+    publicationDate:
+      day: "27"
+      month: "12"
+      year: "2022"
+    title:
+      value: Long-Range Charge Transport via Redox Ligands in Quantum Dot Assemblies
+    type: journal-article
+    url: https://doi.org/10.1021/acsnano.2c09192
+    doi: 10.1021/acsnano.2c09192
+  - authors:
+      - Song Zhang
+      - Stuart Ferrie
+      - Chandramalika R. Peiris
+      - Xin Lyu
+      - Yan B. Vogel
+      - Nadim Darwish
+      - Simone Ciampi
+    journalTitle: Journal of the American Chemical Society
+    publicationDate:
+      day: "27"
+      month: "01"
+      year: "2021"
+    title:
+      value: Common Background Signals in Voltammograms of Crystalline Silicon
+        Electrodes are Reversible Silica–Silicon Redox Chemistry at Highly
+        Conductive Surface Sites
+    type: journal-article
+    url: https://doi.org/10.1021/jacs.0c10713
+    doi: 10.1021/jacs.0c10713
+  - authors:
+      - Essam M. Dief
+      - Yan B. Vogel
+      - Chandramalika R. Peiris
+      - Anton P. Le Brun
+      - Vinicius R. Gonçales
+      - Simone Ciampi
+      - Jeffrey R. Reimers
+      - Nadim Darwish
+    journalTitle: Langmuir
+    publicationDate:
+      day: "15"
+      month: "12"
+      year: "2020"
+    title:
+      value: Covalent Linkages of Molecules and Proteins to Si–H Surfaces Formed by
+        Disulfide Reduction
+    type: journal-article
+    url: https://doi.org/10.1021/acs.langmuir.0c02391
+    doi: 10.1021/acs.langmuir.0c02391
+  - authors:
+      - Yan B. Vogel
+      - Cameron W. Evans
+      - Mattia Belotti
+      - Longkun Xu
+      - Isabella C. Russell
+      - Li-Juan Yu
+      - Alfred K. K. Fung
+      - Nicholas S. Hill
+      - Nadim Darwish
+      - Vinicius R. Gonçales
+      - Michelle L. Coote
+      - K. Swaminathan Iyer
+      - Simone Ciampi
+    journalTitle: Nature Communications
+    publicationDate:
+      day: "10"
+      month: "12"
+      year: "2020"
+    title:
+      value: The corona of a surface bubble promotes electrochemical reactions
+    type: journal-article
+    url: https://doi.org/10.1038/s41467-020-20186-0
+    doi: 10.1038/s41467-020-20186-0
+  - authors:
+      - Yan B. Vogel
+      - Angela Molina
+      - Joaquin Gonzalez
+      - Simone Ciampi
+    journalTitle: Electrochimica Acta
+    publicationDate:
+      day: null
+      month: "10"
+      year: "2020"
+    title:
+      value: Microelectrode arrays with active-area geometries defined by spatial
+        light modulation
+    type: journal-article
+    url: https://doi.org/10.1016/j.electacta.2020.136849
+    doi: 10.1016/j.electacta.2020.136849
+  - authors: []
+    journalTitle: ChemElectroChem
+    publicationDate:
+      day: null
+      month: "10"
+      year: "2020"
+    title:
+      value: Surface patterning of biomolecules using click chemistry and light
+        activated electrochemistry to locally generate Cu(I)
+    type: journal-article
+    url: http://dx.doi.org/10.1002/celc.202001097
+    doi: 10.1002/celc.202001097
+  - authors:
+      - Yan B. Vogel
+      - Nadim Darwish
+      - Simone Ciampi
+    journalTitle: Cell Reports Physical Science
+    publicationDate:
+      day: null
+      month: "07"
+      year: "2020"
+    title:
+      value: Spatiotemporal Control of Electrochemiluminescence Guided by a Visible
+        Light Stimulus
+    type: journal-article
+    url: https://doi.org/10.1016/j.xcrp.2020.100107
+    doi: 10.1016/j.xcrp.2020.100107
+  - authors:
+      - Jinyang Zhang
+      - Stuart Ferrie
+      - Song Zhang
+      - Yan B. Vogel
+      - Chandramalika R. Peiris
+      - Nadim Darwish
+      - Simone Ciampi
+    journalTitle: ACS Applied Nano Materials
+    publicationDate:
+      day: "27"
+      month: "12"
+      year: "2019"
+    title:
+      value: "Correction to Single-Electrode Electrochemistry: Chemically Engineering
+        Surface Adhesion and Hardness To Maximize Redox Work Extracted from
+        Tribocharged Silicon"
+    type: journal-article
+    url: https://doi.org/10.1021/acsanm.9b02390
+    doi: 10.1021/acsanm.9b02390
+  - authors:
+      - Jinyang Zhang
+      - Stuart Ferrie
+      - Song Zhang
+      - Yan B. Vogel
+      - Chandramalika R. Peiris
+      - Nadim Darwish
+      - Simone Ciampi
+    journalTitle: ACS Applied Nano Materials
+    publicationDate:
+      day: "22"
+      month: "11"
+      year: "2019"
+    title:
+      value: "Single-Electrode Electrochemistry: Chemically Engineering Surface
+        Adhesion and Hardness To Maximize Redox Work Extracted from Tribocharged
+        Silicon"
+    type: journal-article
+    url: https://doi.org/10.1021/acsanm.9b01726
+    doi: 10.1021/acsanm.9b01726
+  - authors:
+      - Chandramalika R. Peiris
+      - Yan B. Vogel
+      - Anton P. Le Brun
+      - Albert C. Aragonès
+      - Michelle L. Coote
+      - Ismael Díez-Pérez
+      - Simone Ciampi
+      - Nadim Darwish
+    journalTitle: Journal of the American Chemical Society
+    publicationDate:
+      day: "18"
+      month: "09"
+      year: "2019"
+    title:
+      value: Metal–Single-Molecule–Semiconductor Junctions Formed by a Radical
+        Reaction Bridging Gold and Silicon Electrodes
+    type: journal-article
+    url: http://dx.doi.org/10.1021/jacs.9b07125
+    doi: 10.1021/jacs.9b07125
+  - authors:
+      - Yan B. Vogel
+      - Angela Molina
+      - Joaquin Gonzalez
+      - Simone Ciampi
+    journalTitle: Analytical Chemistry
+    publicationDate:
+      day: "07"
+      month: "05"
+      year: "2019"
+    title:
+      value: "Quantitative Analysis of Cyclic Voltammetry of Redox Monolayers Adsorbed
+        on Semiconductors: Isolating Electrode Kinetics, Lateral Interactions,
+        and Diode Currents"
+    type: journal-article
+    url: https://doi.org/10.1021/acs.analchem.9b00336
+    doi: 10.1021/acs.analchem.9b00336
+  - authors:
+      - Jinyang Zhang
+      - Fergus J. M. Rogers
+      - Nadim Darwish
+      - Vinicius R. Gonçales
+      - Yan B. Vogel
+      - Fei Wang
+      - J. Justin Gooding
+      - M. Chandramalika. R. Peiris
+      - Guohua Jia
+      - Jean-Pierre Veder
+      - Michelle L. Coote
+      - Simone Ciampi
+    journalTitle: Journal of the American Chemical Society
+    publicationDate:
+      day: "10"
+      month: "04"
+      year: "2019"
+    title:
+      value: Electrochemistry on Tribocharged Polymers Is Governed by the Stability of
+        Surface Charges Rather than Charging Magnitude
+    type: journal-article
+    url: https://doi.org/10.1021/jacs.9b00297
+    doi: 10.1021/jacs.9b00297
+  - authors:
+      - Yan B. Vogel
+      - J. Justin Gooding
+      - Simone Ciampi
+    journalTitle: Chemical Society Reviews
+    publicationDate:
+      day: null
+      month: null
+      year: "2019"
+    title:
+      value: "Light-addressable electrochemistry at semiconductor electrodes: redox
+        imaging, mask-free lithography and spatially resolved chemical and
+        biological sensing"
+    type: journal-article
+    url: https://doi.org/10.1039/C8CS00762D
+    doi: 10.1039/C8CS00762D
+  - authors:
+      - Yan B. Vogel
+      - Vinicius R. Gonçales
+      - Louai Al‐Obaidi
+      - J. Justin Gooding
+      - Nadim Darwish
+      - Simone Ciampi
+    journalTitle: Advanced Functional Materials
+    publicationDate:
+      day: null
+      month: "12"
+      year: "2018"
+    title:
+      value: "Nanocrystal Inks: Photoelectrochemical Printing of Cu2O Nanocrystals on
+        Silicon with 2D Control on Polyhedral Shapes"
+    type: journal-article
+    url: https://doi.org/10.1002/adfm.201804791
+    doi: 10.1002/adfm.201804791
+  - authors:
+      - Yan B. Vogel
+      - Jinyang Zhang
+      - Nadim Darwish
+      - Simone Ciampi
+    journalTitle: ACS Nano
+    publicationDate:
+      day: "28"
+      month: "08"
+      year: "2018"
+    title:
+      value: Switching of Current Rectification Ratios within a Single Nanocrystal by
+        Facet-Resolved Electrical Wiring
+    type: journal-article
+    url: https://doi.org/10.1021/acsnano.8b02934
+    doi: 10.1021/acsnano.8b02934
+  - authors:
+      - Yan B. Vogel
+      - Vinicius R. Gonçales
+      - J. Justin Gooding
+      - Simone Ciampi
+    journalTitle: Journal of The Electrochemical Society
+    publicationDate:
+      day: null
+      month: null
+      year: "2017"
+    title:
+      value: "Electrochemical Microscopy Based on Spatial Light Modulators: A
+        Projection System to Spatially Address Electrochemical Reactions at
+        Semiconductors"
+    type: journal-article
+    url: null
+    doi: 10.1149/2.0111804jes
+  - authors:
+      - Vogel, Y.B.
+      - Darwish, N.
+      - Kashi, M.B.
+      - Gooding, J.J.
+      - Ciampi, S.
+    journalTitle: Electrochimica Acta
+    publicationDate:
+      day: null
+      month: null
+      year: "2017"
+    title:
+      value: Hydrogen evolution during the electrodeposition of gold nanoparticles at
+        Si(100) photoelectrodes impairs the analysis of current-time transients
+    type: journal-article
+    url: http://www.scopus.com/inward/record.url?eid=2-s2.0-85021884229&partnerID=MN8TOARS
+    doi: 10.1016/j.electacta.2017.06.126
+  - authors:
+      - Yan B. Vogel
+      - Long Zhang
+      - Nadim Darwish
+      - Vinicius R. Gonçales
+      - Anton Le Brun
+      - J. Justin Gooding
+      - Angela Molina
+      - Gordon G. Wallace
+      - Michelle L. Coote
+      - Joaquin Gonzalez
+      - Simone Ciampi
+    journalTitle: Nature Communications
+    publicationDate:
+      day: null
+      month: null
+      year: "2017"
+    title:
+      value: Reproducible flaws unveil electrostatic aspects of semiconductor
+        electrochemistry
+    type: journal-article
+    url: null
+    doi: 10.1038/s41467-017-02091-1
+  - authors:
+      - Zhang, L.
+      - Vogel, Y.B.
+      - Noble, B.B.
+      - Gonçales, V.R.
+      - Darwish, N.
+      - Brun, A.L.
+      - Gooding, J.J.
+      - Wallace, G.G.
+      - Coote, M.L.
+      - Ciampi, S.
+    journalTitle: Journal of the American Chemical Society
+    publicationDate:
+      day: null
+      month: null
+      year: "2016"
+    title:
+      value: "TEMPO Monolayers on Si(100) Electrodes: Electrostatic Effects by the
+        Electrolyte and Semiconductor Space-Charge on the Electroactivity of a
+        Persistent Radical"
+    type: journal-article
+    url: http://www.scopus.com/inward/record.url?eid=2-s2.0-84982728033&partnerID=MN8TOARS
+    doi: 10.1021/jacs.6b04788
