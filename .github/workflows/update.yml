@@ -12,9 +12,11 @@ jobs:
       contents: write
 
     steps:
+      # ✅ Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ✅ Fetch ORCID publications
       - name: Get ORCID publications
         uses: TheAlbertDev/get-orcid-publications@v0.1.0
         with:
@@ -22,58 +24,74 @@ jobs:
           publicationsFilePath: "./"
           publicationsFileName: "publications"
 
-      - name: Convert YAML to JSON (ACS style)
+      # ✅ Install dependency
+      - name: Install YAML parser
+        run: npm install js-yaml
+
+      # ✅ Write conversion script to file
+      - name: Create conversion script
         run: |
-          npm install js-yaml
-          node <<EOF
+          cat << 'EOF' > convert.js
           const fs = require('fs');
           const yaml = require('js-yaml');
 
-          const data = yaml.load(fs.readFileSync('publications.yml', 'utf8'));
-          const works = data.works || [];
+          try {
+            const raw = fs.readFileSync('publications.yml', 'utf8');
+            const data = yaml.load(raw);
 
-          function formatAuthorACS(name) {
-            const parts = name.trim().split(/\s+/);
-            if (parts.length < 2) return name;
+            const works = (data && data.works) ? data.works : [];
 
-            const last = parts.pop();
-            const initials = parts.map(p => p[0].toUpperCase() + ".").join(" ");
+            function formatAuthorACS(name) {
+              if (!name) return "";
+              const parts = name.trim().split(/\s+/);
+              if (parts.length < 2) return name;
 
-            return last + ", " + initials;
+              const last = parts.pop();
+              const initials = parts
+                .map(p => p[0] ? p[0].toUpperCase() + "." : "")
+                .join(" ");
+
+              return last + ", " + initials;
+            }
+
+            const publications = works.map(p => {
+              const authorsArr = (p.authors || []).map(formatAuthorACS);
+              const authorsACS = authorsArr.join("; ");
+
+              const title = (p.title && p.title.value) ? p.title.value.replace(/\.$/, "") : "";
+              const journal = p.journalTitle || "";
+              const year = (p.publicationDate && p.publicationDate.year) ? p.publicationDate.year : "";
+              const doi = p.doi || "";
+              const url = p.url || ("https://doi.org/" + doi);
+
+              const citation = `${authorsACS}. ${title}. ${journal} ${year}.`;
+
+              return {
+                title,
+                authors: authorsArr,
+                journal,
+                year,
+                doi,
+                url,
+                citation
+              };
+            });
+
+            fs.writeFileSync('publications.json', JSON.stringify(publications, null, 2));
+
+            console.log("✅ Publications processed:", publications.length);
+
+          } catch (err) {
+            console.error("❌ ERROR:", err);
+            process.exit(1);
           }
-
-          const publications = works.map(p => {
-
-            const authorsArr = (p.authors || []).map(formatAuthorACS);
-
-            const authorsACS = authorsArr.join("; ");
-
-            const title = (p.title?.value || "").replace(/\.$/, "");
-            const journal = p.journalTitle || "";
-            const year = p.publicationDate?.year || "";
-
-            // ✅ FULL ACS-style citation string
-            const citation = `${authorsACS}. ${title}. ${journal} ${year}.`;
-
-            return {
-              title: title,
-              authors: authorsArr,
-              journal: journal,
-              year: year,
-              doi: p.doi || "",
-              url: p.url || ("https://doi.org/" + p.doi),
-              citation: citation
-            };
-          });
-
-          fs.writeFileSync(
-            'publications.json',
-            JSON.stringify(publications, null, 2)
-          );
-
-          console.log("✅ ACS citations generated:", publications.length);
           EOF
 
+      # ✅ Run conversion
+      - name: Run conversion
+        run: node convert.js
+
+      # ✅ Commit files
       - name: Commit updated files
         run: |
           git config user.name "github-actions"
