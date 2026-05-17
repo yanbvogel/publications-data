@@ -1,18 +1,22 @@
-name: Fetch ORCID Publications
+name: Update Publications
 
 on:
+  schedule:
+    - cron: "0 3 * * *"   # daily update
   workflow_dispatch:
 
 jobs:
-  fetch:
+  update:
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      - name: Checkout
+      # ✅ Step 1: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ✅ Step 2: Get ORCID publications (creates publications.yml)
       - name: Get ORCID publications
         uses: TheAlbertDev/get-orcid-publications@v0.1.0
         with:
@@ -20,13 +24,45 @@ jobs:
           publicationsFilePath: "./"
           publicationsFileName: "publications"
 
-      - name: Show output (debug)
-        run: cat publications.yml
+      # ✅ Step 3: Convert YAML → JSON
+      - name: Convert YAML to JSON
+        run: |
+          npm install js-yaml
+          node <<EOF
+          const fs = require('fs');
+          const yaml = require('js-yaml');
 
-      - name: Commit file
+          // ✅ Read YAML file
+          const data = yaml.load(fs.readFileSync('publications.yml', 'utf8'));
+
+          // ✅ Extract works
+          const works = data.works || [];
+
+          // ✅ Convert to clean JSON structure
+          const publications = works.map(p => ({
+            title: p.title?.value || "",
+            authors: p.authors || [],
+            journal: p.journalTitle || "",
+            year: p.publicationDate?.year || "",
+            doi: p.doi || "",
+            url: p.url || ("https://doi.org/" + p.doi)
+          }));
+
+          console.log("✅ Publications parsed:", publications.length);
+
+          // ✅ Save JSON
+          fs.writeFileSync(
+            'publications.json',
+            JSON.stringify(publications, null, 2)
+          );
+          EOF
+
+      # ✅ Step 4: Commit files back to repo
+      - name: Commit updated files
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add publications.yml
-          git commit -m "Add publications.yml" || echo "No changes"
+          git add publications.yml publications.json
+          git commit -m "Update publications data" || echo "No changes"
           git push
+``
