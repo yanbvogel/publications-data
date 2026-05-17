@@ -25,7 +25,7 @@ jobs:
       - name: Install js-yaml
         run: npm install js-yaml
 
-      - name: Convert YAML → JSON (ACS + bold name)
+      - name: Convert YAML → JSON (ACS + bold + DOI link)
         run: |
           cat > convert.js <<'EOF'
           const fs = require('fs');
@@ -36,20 +36,18 @@ jobs:
             const data = yaml.load(raw);
             const works = data && data.works ? data.works : [];
 
-            const targetName = "Vogel"; // 🔹 your last name
+            const targetName = "Vogel";
 
             function formatAuthor(name) {
               if (!name) return "";
 
               name = name.trim();
 
-              // Case: contains comma
               if (name.includes(",")) {
                 let parts = name.split(",");
                 let a = parts[0].trim();
                 let b = (parts[1] || "").trim();
 
-                // Fix reversed formats like "Y.B., V."
                 if (/^[A-Z.]+$/.test(a) && /^[A-Z.]+$/.test(b)) {
                   return b + " " + a;
                 }
@@ -57,7 +55,6 @@ jobs:
                 return a + ", " + b;
               }
 
-              // Case: normal "First Middle Last"
               let parts = name.split(/\s+/);
               if (parts.length < 2) return name;
 
@@ -71,7 +68,6 @@ jobs:
 
               let authors = (p.authors || []).map(formatAuthor).filter(a => a);
 
-              // ✅ Highlight your name
               authors = authors.map(a => {
                 if (a.includes(targetName)) {
                   return `<strong>${a}</strong>`;
@@ -90,7 +86,8 @@ jobs:
               let doi = p.doi || "";
               let url = p.url || ("https://doi.org/" + doi);
 
-              let citation = `${authorsStr}. ${title}. ${journal} ${year}.`;
+              // ✅ DOI clickable link inside citation
+              let citation = `${authorsStr}. ${title}. ${journal} ${year}. <a href="${url}" target="_blank">https://doi.org/${doi}</a>`;
 
               citation = citation
                 .replace(/\s+/g, " ")
@@ -125,5 +122,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add publications.yml publications.json
-          git commit -m "Update publications (ACS + bold name)" || echo "No changes"
+          git commit -m "Update publications (ACS + links)" || echo "No changes"
           git push
