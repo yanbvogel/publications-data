@@ -2,7 +2,7 @@ name: Update Publications
 
 on:
   schedule:
-    - cron: "0 3 * * *"   # daily update
+    - cron: "0 3 * * *"
   workflow_dispatch:
 
 jobs:
@@ -12,11 +12,9 @@ jobs:
       contents: write
 
     steps:
-      # ✅ Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ✅ Fetch publications from ORCID
       - name: Get ORCID publications
         uses: TheAlbertDev/get-orcid-publications@v0.1.0
         with:
@@ -24,8 +22,7 @@ jobs:
           publicationsFilePath: "./"
           publicationsFileName: "publications"
 
-      # ✅ Convert YAML → JSON + clean formatting
-      - name: Convert YAML to JSON
+      - name: Convert YAML to JSON (ACS style)
         run: |
           npm install js-yaml
           node <<EOF
@@ -35,32 +32,37 @@ jobs:
           const data = yaml.load(fs.readFileSync('publications.yml', 'utf8'));
           const works = data.works || [];
 
-          function formatAuthor(name) {
+          function formatAuthorACS(name) {
             const parts = name.trim().split(/\s+/);
             if (parts.length < 2) return name;
 
             const last = parts.pop();
             const initials = parts.map(p => p[0].toUpperCase() + ".").join(" ");
-            return initials + " " + last;
+
+            return last + ", " + initials;
           }
 
           const publications = works.map(p => {
 
-            const authorsArr = (p.authors || []).map(formatAuthor);
+            const authorsArr = (p.authors || []).map(formatAuthorACS);
 
-            const authorsFormatted =
-              authorsArr.length > 1
-                ? authorsArr.slice(0, -1).join(", ") + ", and " + authorsArr.slice(-1)
-                : (authorsArr[0] || "");
+            const authorsACS = authorsArr.join("; ");
+
+            const title = (p.title?.value || "").replace(/\.$/, "");
+            const journal = p.journalTitle || "";
+            const year = p.publicationDate?.year || "";
+
+            // ✅ FULL ACS-style citation string
+            const citation = `${authorsACS}. ${title}. ${journal} ${year}.`;
 
             return {
-              title: p.title?.value || "",
+              title: title,
               authors: authorsArr,
-              authorsFormatted: authorsFormatted,
-              journal: p.journalTitle || "",
-              year: p.publicationDate?.year || "",
+              journal: journal,
+              year: year,
               doi: p.doi || "",
-              url: p.url || ("https://doi.org/" + p.doi)
+              url: p.url || ("https://doi.org/" + p.doi),
+              citation: citation
             };
           });
 
@@ -69,14 +71,13 @@ jobs:
             JSON.stringify(publications, null, 2)
           );
 
-          console.log("✅ Publications processed:", publications.length);
+          console.log("✅ ACS citations generated:", publications.length);
           EOF
 
-      # ✅ Commit results
       - name: Commit updated files
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add publications.yml publications.json
-          git commit -m "Update publications data" || echo "No changes"
+          git commit -m "Update publications (ACS format)" || echo "No changes"
           git push
