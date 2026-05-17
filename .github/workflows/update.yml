@@ -12,11 +12,9 @@ jobs:
       contents: write
 
     steps:
-      # ✅ Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ✅ Step 2: Fetch ORCID publications
       - name: Get ORCID publications
         uses: TheAlbertDev/get-orcid-publications@v0.1.0
         with:
@@ -24,12 +22,10 @@ jobs:
           publicationsFilePath: "./"
           publicationsFileName: "publications"
 
-      # ✅ Step 3: Install dependency
       - name: Install js-yaml
         run: npm install js-yaml
 
-      # ✅ Step 4: Convert YAML → JSON (ACS formatting, robust)
-      - name: Convert data
+      - name: Convert YAML → JSON (ACS + bold name)
         run: |
           cat > convert.js <<'EOF'
           const fs = require('fs');
@@ -39,6 +35,8 @@ jobs:
             const raw = fs.readFileSync('publications.yml', 'utf8');
             const data = yaml.load(raw);
             const works = data && data.works ? data.works : [];
+
+            const targetName = "Vogel"; // 🔹 your last name
 
             function formatAuthor(name) {
               if (!name) return "";
@@ -70,7 +68,16 @@ jobs:
             }
 
             const publications = works.map(p => {
+
               let authors = (p.authors || []).map(formatAuthor).filter(a => a);
+
+              // ✅ Highlight your name
+              authors = authors.map(a => {
+                if (a.includes(targetName)) {
+                  return `<strong>${a}</strong>`;
+                }
+                return a;
+              });
 
               let authorsStr = authors.length ? authors.join("; ") : "Unknown Author";
 
@@ -85,7 +92,6 @@ jobs:
 
               let citation = `${authorsStr}. ${title}. ${journal} ${year}.`;
 
-              // cleanup
               citation = citation
                 .replace(/\s+/g, " ")
                 .replace(/\.\./g, ".")
@@ -105,6 +111,7 @@ jobs:
             fs.writeFileSync('publications.json', JSON.stringify(publications, null, 2));
 
             console.log("✅ Publications processed:", publications.length);
+
           } catch (err) {
             console.error("❌ ERROR:", err);
             process.exit(1);
@@ -113,11 +120,10 @@ jobs:
 
           node convert.js
 
-      # ✅ Step 5: Commit results
       - name: Commit updated files
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add publications.yml publications.json
-          git commit -m "Update publications (ACS clean)" || echo "No changes"
+          git commit -m "Update publications (ACS + bold name)" || echo "No changes"
           git push
