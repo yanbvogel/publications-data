@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: npm install js-yaml
 
-      - name: Convert + Enrich with Crossref
+      - name: Convert + ACS formatting (italics + abbreviations)
         run: |
           cat > convert.js <<'EOF'
           const fs = require('fs');
@@ -62,44 +62,64 @@ jobs:
             return last + ", " + initials;
           }
 
+          function abbreviateJournal(full) {
+            if (!full) return "";
+
+            const map = {
+              "Journal of the American Chemical Society": "J. Am. Chem. Soc.",
+              "Nature Communications": "Nat. Commun.",
+              "ACS Nano": "ACS Nano",
+              "Chemical Society Reviews": "Chem. Soc. Rev.",
+              "Journal of Physical Chemistry C": "J. Phys. Chem. C",
+              "The Journal of Physical Chemistry C": "J. Phys. Chem. C",
+              "Chemistry of Materials": "Chem. Mater.",
+              "ACS Applied Nano Materials": "ACS Appl. Nano Mater.",
+              "Advanced Functional Materials": "Adv. Funct. Mater.",
+              "Electrochimica Acta": "Electrochim. Acta",
+              "Analytical Chemistry": "Anal. Chem.",
+              "Langmuir": "Langmuir",
+              "Cell Reports Physical Science": "Cell Rep. Phys. Sci.",
+              "Journal of The Electrochemical Society": "J. Electrochem. Soc."
+            };
+
+            return map[full] || full; // fallback if unknown
+          }
+
           async function run() {
             const raw = fs.readFileSync('publications.yml', 'utf8');
             const data = yaml.load(raw);
             const works = data?.works || [];
-            const targetName = "Vogel";
 
+            const targetName = "Vogel";
             const publications = [];
 
             for (const p of works) {
 
               let authors = (p.authors || []).map(formatAuthor).filter(Boolean);
 
-              authors = authors.map(a => {
-                if (a.includes(targetName)) {
-                  return `<strong>${a}</strong>`;
-                }
-                return a;
-              });
+              authors = authors.map(a =>
+                a.includes(targetName) ? `<strong>${a}</strong>` : a
+              );
 
               const authorsStr = authors.length ? authors.join("; ") : "Unknown Author";
 
               let title = p.title?.value || "";
               title = title.replace(/\.+$/, "");
 
-              const journal = p.journalTitle || "";
-              const year = p.publicationDate?.year || "";
+              const journalFull = p.journalTitle || "";
+              const journalAbbrev = abbreviateJournal(journalFull);
+              const journal = journalAbbrev ? `<em>${journalAbbrev}</em>` : "";
 
+              const year = p.publicationDate?.year || "";
               const doi = p.doi || "";
               const url = p.url || ("https://doi.org/" + doi);
 
-              // ✅_GET Crossref data
               const cr = await fetchCrossref(doi);
 
               const volume = cr.volume || "";
               const issue = cr.issue ? `(${cr.issue})` : "";
               const pages = cr.page ? `, ${cr.page}` : "";
 
-              // ✅ Build ACS-style citation
               let citation = `${authorsStr}. ${title}. ${journal} ${year}`;
 
               if (volume) citation += `, ${volume}${issue}`;
@@ -137,5 +157,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add publications.yml publications.json
-          git commit -m "Add volume + pages (ACS style)" || echo "No changes"
+          git commit -m "ACS style (italic + abbreviated journals)" || echo "No changes"
           git push
