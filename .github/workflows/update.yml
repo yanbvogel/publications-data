@@ -25,42 +25,11 @@ jobs:
       - name: Install dependencies
         run: npm install js-yaml
 
-      - name: Convert + ACS formatting (italics + abbreviations)
+      - name: Convert YAML → JSON (ACS final)
         run: |
           cat > convert.js <<'EOF'
           const fs = require('fs');
           const yaml = require('js-yaml');
-
-          async function fetchCrossref(doi) {
-            try {
-              if (!doi) return {};
-              const res = await fetch(`https://api.crossref.org/works/${doi}`);
-              const json = await res.json();
-              return json.message || {};
-            } catch {
-              return {};
-            }
-          }
-
-          function formatAuthor(name) {
-            if (!name) return "";
-            name = name.trim();
-
-            if (name.includes(",")) {
-              const [a, b] = name.split(",");
-              if (/^[A-Z.]+$/.test(a) && /^[A-Z.]+$/.test(b || "")) {
-                return b.trim() + " " + a.trim();
-              }
-              return a.trim() + ", " + (b || "").trim();
-            }
-
-            const parts = name.split(/\s+/);
-            if (parts.length < 2) return name;
-
-            const last = parts.pop();
-            const initials = parts.map(p => p[0]?.toUpperCase() + ".").join(" ");
-            return last + ", " + initials;
-          }
 
           function abbreviateJournal(full) {
             if (!full) return "";
@@ -82,72 +51,83 @@ jobs:
               "Journal of The Electrochemical Society": "J. Electrochem. Soc."
             };
 
-            return map[full] || full; // fallback if unknown
+            return map[full] || full;
           }
 
-          async function run() {
+          function formatAuthor(name) {
+            if (!name) return "";
+
+            name = name.trim();
+
+            if (name.includes(",")) {
+              const [a, b] = name.split(",");
+              if (/^[A-Z.]+$/.test(a) && /^[A-Z.]+$/.test(b || "")) {
+                return b.trim() + " " + a.trim();
+              }
+              return a.trim() + ", " + (b || "").trim();
+            }
+
+            const parts = name.split(/\s+/);
+            if (parts.length < 2) return name;
+
+            const last = parts.pop();
+            const initials = parts.map(p => p[0]?.toUpperCase() + ".").join(" ");
+
+            return last + ", " + initials;
+          }
+
+          try {
             const raw = fs.readFileSync('publications.yml', 'utf8');
             const data = yaml.load(raw);
             const works = data?.works || [];
 
-            const targetName = "Vogel";
-            const publications = [];
+            const publications = works.map(p => {
 
-            for (const p of works) {
+              // AUTHORS
+              let authors = (p.authors || [])
+                .map(formatAuthor)
+                .filter(Boolean)
+                .map(a =>
+                  a.includes("Vogel")
+                    ? `<strong>${a}</strong>`
+                    : a
+                )
+                .join("; ") || "Unknown Author";
 
-              let authors = (p.authors || []).map(formatAuthor).filter(Boolean);
-
-              authors = authors.map(a =>
-                a.includes(targetName) ? `<strong>${a}</strong>` : a
-              );
-
-              const authorsStr = authors.length ? authors.join("; ") : "Unknown Author";
-
+              // TITLE
               let title = p.title?.value || "";
               title = title.replace(/\.+$/, "");
 
-              const journalFull = p.journalTitle || "";
-              const journalAbbrev = abbreviateJournal(journalFull);
+              // JOURNAL (✅ WITH ITALICS HERE)
+              const journalAbbrev = abbreviateJournal(p.journalTitle || "");
               const journal = journalAbbrev ? `<em>${journalAbbrev}</em>` : "";
 
               const year = p.publicationDate?.year || "";
               const doi = p.doi || "";
               const url = p.url || ("https://doi.org/" + doi);
 
-              const cr = await fetchCrossref(doi);
-
-              const volume = cr.volume || "";
-              const issue = cr.issue ? `(${cr.issue})` : "";
-              const pages = cr.page ? `, ${cr.page}` : "";
-
-              let citation = `${authorsStr}. ${title}. ${journal} ${year}`;
-
-              if (volume) citation += `, ${volume}${issue}`;
-              if (pages) citation += `${pages}`;
-
-              citation += ".";
+              // ✅ IMPORTANT: HTML ON PURPOSE
+              let citation = `${authors}. ${title}. ${journal} ${year}.`;
 
               citation = citation
                 .replace(/\s+/g, " ")
                 .replace(/\.\./g, ".")
                 .trim();
 
-              publications.push({
-                title,
-                journal,
-                year,
-                doi,
-                url,
-                citation
-              });
-            }
+              return {
+                citation,
+                url
+              };
+            });
 
             fs.writeFileSync('publications.json', JSON.stringify(publications, null, 2));
 
             console.log("✅ Publications processed:", publications.length);
-          }
 
-          run();
+          } catch (err) {
+            console.error(err);
+            process.exit(1);
+          }
           EOF
 
           node convert.js
@@ -157,5 +137,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add publications.yml publications.json
-          git commit -m "ACS style (italic + abbreviated journals)" || echo "No changes"
+          git commit -m "ACS style with journal italic + abbreviations" || echo "No changes"
           git push
