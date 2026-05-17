@@ -1,0 +1,32 @@
+name: Fetch ORCID Publications
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get ORCID publications
+        uses: TheAlbertDev/get-orcid-publications@v0.1.0
+        with:
+          orcidId: "0000-0003-1975-7292"
+          publicationsFilePath: "./"
+          publicationsFileName: "publications"
+
+      - name: Show output (debug)
+        run: cat publications.yml
+
+      - name: Commit file
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add publications.yml
+          git commit -m "Add publications.yml" || echo "No changes"
+          git push
