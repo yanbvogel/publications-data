@@ -2,7 +2,8 @@ name: Update Publications
 
 on:
   schedule:
-    - cron workflow_dispatch:    - cron: "0 3 * * *"
+    - cron: "0 3 * * *"
+  workflow_dispatch:
 
 jobs:
   update:
@@ -11,9 +12,11 @@ jobs:
       contents: write
 
     steps:
+      # ✅ Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ✅ Step 2: Fetch ORCID publications
       - name: Get ORCID publications
         uses: TheAlbertDev/get-orcid-publications@v0.1.0
         with:
@@ -21,76 +24,68 @@ jobs:
           publicationsFilePath: "./"
           publicationsFileName: "publications"
 
-      - name: Install YAML parser
+      # ✅ Step 3: Install dependency
+      - name: Install js-yaml
         run: npm install js-yaml
 
-      - name: Create conversion script
+      # ✅ Step 4: Convert YAML → JSON (ACS formatting, robust)
+      - name: Convert data
         run: |
-          cat << 'EOF' > convert.js
+          cat > convert.js <<'EOF'
           const fs = require('fs');
           const yaml = require('js-yaml');
 
           try {
             const raw = fs.readFileSync('publications.yml', 'utf8');
             const data = yaml.load(raw);
+            const works = data && data.works ? data.works : [];
 
-            const works = (data && data.works) ? data.works : [];
-
-            function formatAuthorACS(name) {
+            function formatAuthor(name) {
               if (!name) return "";
 
               name = name.trim();
 
-              // CASE 1: already "Last, Initials"
+              // Case: contains comma
               if (name.includes(",")) {
-                let [a, b] = name.split(",");
+                let parts = name.split(",");
+                let a = parts[0].trim();
+                let b = (parts[1] || "").trim();
 
-                a = a.trim();
-                b = (b || "").trim();
-
-                // detect incorrect reversed format like "Y.B., V."
-                if (a.match(/^[A-Z.]+$/) && b.match(/^[A-Z.]+$/)) {
-                  return b + " " + a; // swap
+                // Fix reversed formats like "Y.B., V."
+                if (/^[A-Z.]+$/.test(a) && /^[A-Z.]+$/.test(b)) {
+                  return b + " " + a;
                 }
 
                 return a + ", " + b;
               }
 
-              // CASE 2: "First Last"
-              const parts = name.split(/\s+/);
+              // Case: normal "First Middle Last"
+              let parts = name.split(/\s+/);
               if (parts.length < 2) return name;
 
               let last = parts.pop();
-              let initials = parts
-                .map(p => p[0] ? p[0].toUpperCase() + "." : "")
-                .join(" ");
+              let initials = parts.map(p => p[0] ? p[0].toUpperCase() + "." : "").join(" ");
 
               return last + ", " + initials;
             }
 
             const publications = works.map(p => {
+              let authors = (p.authors || []).map(formatAuthor).filter(a => a);
 
-              let authorsArr = (p.authors || []).map(formatAuthorACS);
-
-              // remove empty authors
-              authorsArr = authorsArr.filter(a => a.trim() !== "");
-
-              const authorsACS =
-                authorsArr.length > 0
-                  ? authorsArr.join("; ")
-                  : "Unknown Author";
+              let authorsStr = authors.length ? authors.join("; ") : "Unknown Author";
 
               let title = (p.title && p.title.value) ? p.title.value : "";
-              title = title.replace(/\.+$/, ""); // remove trailing dots
+              title = title.replace(/\.+$/, "");
 
-              const journal = p.journalTitle || "";
-              const year = (p.publicationDate && p.publicationDate.year) || "";
-              const doi = p.doi || "";
-              const url = p.url || ("https://doi.org/" + doi);
+              let journal = p.journalTitle || "";
+              let year = p.publicationDate && p.publicationDate.year ? p.publicationDate.year : "";
 
-              let citation = `${authorsACS}. ${title}. ${journal} ${year}.`;
+              let doi = p.doi || "";
+              let url = p.url || ("https://doi.org/" + doi);
 
-              // remove double spaces and double dots
+              let citation = `${authorsStr}. ${title}. ${journal} ${year}.`;
+
+              // cleanup
               citation = citation
                 .replace(/\s+/g, " ")
                 .replace(/\.\./g, ".")
@@ -98,7 +93,7 @@ jobs:
 
               return {
                 title,
-                authors: authorsArr,
+                authors,
                 journal,
                 year,
                 doi,
@@ -110,20 +105,19 @@ jobs:
             fs.writeFileSync('publications.json', JSON.stringify(publications, null, 2));
 
             console.log("✅ Publications processed:", publications.length);
-
           } catch (err) {
             console.error("❌ ERROR:", err);
             process.exit(1);
           }
           EOF
 
-      - name: Run conversion
-        run: node convert.js
+          node convert.js
 
+      # ✅ Step 5: Commit results
       - name: Commit updated files
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add publications.yml publications.json
-          git commit -m "Update publications (ACS clean format)" || echo "No changes"
+          git commit -m "Update publications (ACS clean)" || echo "No changes"
           git push
