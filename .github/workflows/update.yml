@@ -22,51 +22,57 @@ jobs:
           publicationsFilePath: "./"
           publicationsFileName: "publications"
 
-      - name: Install js-yaml
+      - name: Install dependencies
         run: npm install js-yaml
 
-      - name: Convert YAML → JSON (clean ACS, no DOI in text)
+      - name: Convert + Enrich with Crossref
         run: |
           cat > convert.js <<'EOF'
           const fs = require('fs');
           const yaml = require('js-yaml');
 
-          try {
-            const raw = fs.readFileSync('publications.yml', 'utf8');
-            const data = yaml.load(raw);
-            const works = data && data.works ? data.works : [];
+          async function fetchCrossref(doi) {
+            try {
+              if (!doi) return {};
+              const res = await fetch(`https://api.crossref.org/works/${doi}`);
+              const json = await res.json();
+              return json.message || {};
+            } catch {
+              return {};
+            }
+          }
 
-            const targetName = "Vogel";
+          function formatAuthor(name) {
+            if (!name) return "";
+            name = name.trim();
 
-            function formatAuthor(name) {
-              if (!name) return "";
-
-              name = name.trim();
-
-              if (name.includes(",")) {
-                let parts = name.split(",");
-                let a = parts[0].trim();
-                let b = (parts[1] || "").trim();
-
-                if (/^[A-Z.]+$/.test(a) && /^[A-Z.]+$/.test(b)) {
-                  return b + " " + a;
-                }
-
-                return a + ", " + b;
+            if (name.includes(",")) {
+              const [a, b] = name.split(",");
+              if (/^[A-Z.]+$/.test(a) && /^[A-Z.]+$/.test(b || "")) {
+                return b.trim() + " " + a.trim();
               }
-
-              let parts = name.split(/\s+/);
-              if (parts.length < 2) return name;
-
-              let last = parts.pop();
-              let initials = parts.map(p => p[0] ? p[0].toUpperCase() + "." : "").join(" ");
-
-              return last + ", " + initials;
+              return a.trim() + ", " + (b || "").trim();
             }
 
-            const publications = works.map(p => {
+            const parts = name.split(/\s+/);
+            if (parts.length < 2) return name;
 
-              let authors = (p.authors || []).map(formatAuthor).filter(a => a);
+            const last = parts.pop();
+            const initials = parts.map(p => p[0]?.toUpperCase() + ".").join(" ");
+            return last + ", " + initials;
+          }
+
+          async function run() {
+            const raw = fs.readFileSync('publications.yml', 'utf8');
+            const data = yaml.load(raw);
+            const works = data?.works || [];
+            const targetName = "Vogel";
+
+            const publications = [];
+
+            for (const p of works) {
+
+              let authors = (p.authors || []).map(formatAuthor).filter(Boolean);
 
               authors = authors.map(a => {
                 if (a.includes(targetName)) {
@@ -75,44 +81,53 @@ jobs:
                 return a;
               });
 
-              let authorsStr = authors.length ? authors.join("; ") : "Unknown Author";
+              const authorsStr = authors.length ? authors.join("; ") : "Unknown Author";
 
-              let title = (p.title && p.title.value) ? p.title.value : "";
+              let title = p.title?.value || "";
               title = title.replace(/\.+$/, "");
 
-              let journal = p.journalTitle || "";
-              let year = p.publicationDate && p.publicationDate.year ? p.publicationDate.year : "";
+              const journal = p.journalTitle || "";
+              const year = p.publicationDate?.year || "";
 
-              let doi = p.doi || "";
-              let url = p.url || ("https://doi.org/" + doi);
+              const doi = p.doi || "";
+              const url = p.url || ("https://doi.org/" + doi);
 
-              // ✅ NO DOI in citation anymore
-              let citation = `${authorsStr}. ${title}. ${journal} ${year}.`;
+              // ✅_GET Crossref data
+              const cr = await fetchCrossref(doi);
+
+              const volume = cr.volume || "";
+              const issue = cr.issue ? `(${cr.issue})` : "";
+              const pages = cr.page ? `, ${cr.page}` : "";
+
+              // ✅ Build ACS-style citation
+              let citation = `${authorsStr}. ${title}. ${journal} ${year}`;
+
+              if (volume) citation += `, ${volume}${issue}`;
+              if (pages) citation += `${pages}`;
+
+              citation += ".";
 
               citation = citation
                 .replace(/\s+/g, " ")
                 .replace(/\.\./g, ".")
                 .trim();
 
-              return {
+              publications.push({
                 title,
-                authors,
                 journal,
                 year,
                 doi,
                 url,
                 citation
-              };
-            });
+              });
+            }
 
             fs.writeFileSync('publications.json', JSON.stringify(publications, null, 2));
 
             console.log("✅ Publications processed:", publications.length);
-
-          } catch (err) {
-            console.error("❌ ERROR:", err);
-            process.exit(1);
           }
+
+          run();
           EOF
 
           node convert.js
@@ -122,5 +137,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add publications.yml publications.json
-          git commit -m "Update publications (clean citations)" || echo "No changes"
+          git commit -m "Add volume + pages (ACS style)" || echo "No changes"
           git push
