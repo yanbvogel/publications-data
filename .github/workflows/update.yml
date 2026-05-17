@@ -65,4 +65,3 @@ jobs:
           git add publications.yml publications.json
           git commit -m "Update publications data" || echo "No changes"
           git push
-``
