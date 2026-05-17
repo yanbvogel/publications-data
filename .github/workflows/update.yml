@@ -25,7 +25,7 @@ jobs:
       - name: Install js-yaml
         run: npm install js-yaml
 
-      - name: Convert YAML → JSON (ACS + bold + DOI link)
+      - name: Convert YAML → JSON (clean ACS, no DOI in text)
         run: |
           cat > convert.js <<'EOF'
           const fs = require('fs');
@@ -86,8 +86,8 @@ jobs:
               let doi = p.doi || "";
               let url = p.url || ("https://doi.org/" + doi);
 
-              // ✅ DOI clickable link inside citation
-              let citation = `${authorsStr}. ${title}. ${journal} ${year}. <a href="${url}" target="_blank">https://doi.org/${doi}</a>`;
+              // ✅ NO DOI in citation anymore
+              let citation = `${authorsStr}. ${title}. ${journal} ${year}.`;
 
               citation = citation
                 .replace(/\s+/g, " ")
@@ -122,5 +122,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add publications.yml publications.json
-          git commit -m "Update publications (ACS + links)" || echo "No changes"
+          git commit -m "Update publications (clean citations)" || echo "No changes"
           git push
