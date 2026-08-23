@@ -1,5 +1,34 @@
 works:
   - authors:
+      - Hua Chen
+      - Boris B. Claus
+      - Wenya Song
+      - Marina Vildanova
+      - Lara M. van der Poll
+      - Anne van Aken
+      - Yan B. Vogel
+      - Jing Bai
+      - Yun Hai
+      - Yigithan M. Kose
+      - Maria Isabel Pintor Monroy
+      - Loredana Protesescu
+      - Tom J. Savenije
+      - Zeger Hens
+      - Itai Lieberman
+      - Arjan J. Houtepen
+    journalTitle: ACS Nano
+    publicationDate:
+      day: "21"
+      month: "08"
+      year: "2026"
+    title:
+      value: InF3 Surface Passivation on InAs Quantum Dots Enhances Photoluminescence
+        and Reduces Trap-Induced Dark Current in Shortwave Infrared
+        Photodetectors
+    type: journal-article
+    url: https://doi.org/10.1021/acsnano.6c06196
+    doi: 10.1021/acsnano.6c06196
+  - authors:
       - Yan B. Vogel
       - Yesim Sahin
       - Oleksandra Ortikova
