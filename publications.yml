@@ -1,5 +1,23 @@
 works:
   - authors:
+      - Yan B. Vogel
+      - Yesim Sahin
+      - Oleksandra Ortikova
+      - Simon C. Boehme
+      - Arjan J. Houtepen
+      - Dmitry N. Dirin
+      - Maksym V. Kovalenko
+    journalTitle: Journal of the American Chemical Society
+    publicationDate:
+      day: "08"
+      month: "11"
+      year: "2026"
+    title:
+      value: Ambipolar Electrochemical Doping of CsPbBr3 Nanocrystals
+    type: journal-article
+    url: https://doi.org/10.1021/jacs.6c19292
+    doi: 10.1021/jacs.6c19292
+  - authors:
       - Hua Chen
       - Boris B. Claus
       - Wenya Song
